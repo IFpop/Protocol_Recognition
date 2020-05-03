@@ -5,8 +5,10 @@ from sklearn import preprocessing
 import pandas as pd
 
 if __name__ == '__main__':
-    preprocessor = PcapPreprocessor()
-    dataset = pd.read_csv('data/demo_all.csv')
-    dataset = dataset_preprocessor(dataset)
-    cluster = KMeansCluster(dataset)
-    cluster.find_best_k(range(50, 60))
+    preprocessor = PcapPreprocessor(input_file='pcap/20200502.pcap', data_range=slice(0, 1000),
+                                    label_file='pcap/20200502.csv')
+    statistic = preprocessor.statistic()
+    print(statistic.tcp_protocol)
+    print(statistic.udp_protocol)
+    print(statistic.other_protocol)
+    preprocessor.to_csv_in_image('data/20200502-label.csv', label=True)
