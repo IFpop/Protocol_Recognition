@@ -5,37 +5,63 @@ import pandas as pd
 
 
 class PcapStatistic:
+    """
+    Data class to contain packets statistic info
+    """
+
+    # All packets number
     all = 0
+    # All packets' protocols
     all_protocol = []
+    # All TCP packets number
     tcp = 0
+    # All TCP packets' protocols
     tcp_protocol = []
+    # All UDP packets number
     udp = 0
+    # All UDP packets' protocols
     udp_protocol = []
+    # All Other(neither TCP nor UDT) packets number
     other = 0
+    # All Other(neither TCP nor UDT) packets' protocols
     other_protocol = []
 
 
 class PcapPreprocessor:
-    __input_file = None
-    __label_file = None
-    __range = None
-    __packets = []
-    __label = []
-    __tcp_packets = []
-    __tcp_label = []
-    __udp_packets = []
-    __udp_label = []
-    __other_packets = []
-    __other_label = []
-    __statistic = None
+    """
+    Preprocessor for *.pcap files
+    """
+
+    # Input *.pcap file path
+    __input_file: str = None
+    # Input *.csv label file path
+    __label_file: str = None
+    # Data range to load
+    __range: slice = None
+    # Packets array
+    __packets: array = []
+    # Corresponding label to packets array
+    __label: array = []
+    # TCP packets array
+    __tcp_packets: array = []
+    # Corresponding label to TCP packets array
+    __tcp_label: array = []
+    # UDP packets array
+    __udp_packets: array = []
+    # Corresponding label to UDP packets array
+    __udp_label: array = []
+    # Other(neither TCP nor UDT) packets array
+    __other_packets: array = []
+    # Corresponding label to Other(neither TCP nor UDT) packets array
+    __other_label: array = []
+    # Statistic info of packets
+    __statistic: Type[PcapStatistic] = None
 
     def __init__(self, input_file: str, data_range: slice = None, label_file: str = None):
         """
         :param input_file: input *.pcap file path
         :param data_range: range for rows to load in
         :param label_file: corresponding label file(*.csv file with a 'Protocol' column) for input *.pcap file
-
-        Preprocessor for *.pcap files
         """
 
         # Load packets from <input_file>
@@ -62,7 +88,7 @@ class PcapPreprocessor:
         self.__statistic = PcapStatistic
         length = len(self.__packets)
         for i in range(length):
-            if self.__packets[i].getlayer('TCP') is not None:
+            if self.__packets[i].haslayer('TCP'):
                 self.__statistic.tcp += 1
                 self.__tcp_packets.append(self.__packets[i])
                 if label_file is not None:
@@ -70,7 +96,7 @@ class PcapPreprocessor:
                     if self.__label[i] not in self.__statistic.tcp_protocol:
                         self.__statistic.tcp_protocol.append(self.__label[i])
                         self.__statistic.all_protocol.append(self.__label[i])
-            elif self.__packets[i].getlayer('UDP') is not None:
+            elif self.__packets[i].haslayer('UDP'):
                 self.__statistic.udp += 1
                 self.__udp_packets.append(self.__packets[i])
                 if label_file is not None:

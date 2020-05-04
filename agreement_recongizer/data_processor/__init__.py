@@ -1,1 +1,2 @@
 from agreement_recongizer.data_processor.PcapPreprocessor import PcapPreprocessor
+from agreement_recongizer.data_processor.ProtocolDictionary import ProtocolDictionary
