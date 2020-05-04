@@ -79,10 +79,10 @@ class PcapPreprocessor:
                 self.__label = pd.read_csv(label_file)['Protocol'][data_range].tolist()
             else:
                 self.__label = pd.read_csv(label_file)['Protocol'].tolist()
-        # Check <input_file> is as long as <label_file> or not
-        if len(self.__packets) != len(self.__label):
-            raise Exception('<input_file\'{0}\'> is not corresponding to <label_file\'{1}\'>: '
-                            'Length of two file is not the same, please check it.\n'.format(input_file, label_file))
+            # Check <input_file> is as long as <label_file> or not
+            if len(self.__packets) != len(self.__label):
+                raise Exception('<input_file\'{0}\'> is not corresponding to <label_file\'{1}\'>: '
+                                'Length of two file is not the same, please check it.\n'.format(input_file, label_file))
 
         # Group pcap by TCP/UDP/Other and do statistic
         self.__statistic = PcapStatistic
