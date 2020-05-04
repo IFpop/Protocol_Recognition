@@ -1,5 +1,5 @@
+from agreement_recongizer.data_processor.ProtocolDictionary import ProtocolDictionary
 from typing import Type
-
 from scapy.all import *
 import pandas as pd
 
@@ -209,6 +209,12 @@ class PcapPreprocessor:
 
         # Add label column
         if label & (selected_label is not None):
+            dictionary = ProtocolDictionary
+            for i in range(packets_size):
+                if dictionary.dict.get(selected_label[i]) is not None:
+                    selected_label[i] = dictionary.dict.get(selected_label[i])
+                else:
+                    selected_label[i] = dictionary.dict.get('UNKNOWN')
             csv['label'] = selected_label
 
         # Save dec data vector to CSV file
