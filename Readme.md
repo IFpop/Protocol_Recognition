@@ -1,5 +1,13 @@
 # Start
 
+## 依赖
+
+- pytorch
+- pandas
+- numpy
+- sklearn
+- docopt
+
 ## 数据集格式
 
 ### Train数据集
@@ -27,6 +35,3 @@
   ```bash
   python3 start.py -M -d ./malwareAnalysis/data/train.csv -t ./module/DenseNet.pt
   ```
-
-
- 
